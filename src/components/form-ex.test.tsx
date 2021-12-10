@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormEx from './form-ex';
 
-const renderComplexForm = () => {
+const renderComplex = () => {
   const onSubmit = jest.fn();
   const { getByText, queryByText, container } = render(<FormEx onSubmit={onSubmit} />);
   const email = () => container.querySelector('input[name="email"]') as HTMLInputElement;
@@ -24,7 +24,7 @@ const renderComplexForm = () => {
 
 describe('<CountEx />', () => {
   it('should render default component', () => {
-    const { email, password, loginBtn, disabledDiv } = renderComplexForm();
+    const { email, password, loginBtn, disabledDiv } = renderComplex();
     expect(email()).toBeInTheDocument();
     expect(password()).toBeInTheDocument();
     expect(loginBtn()).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('<CountEx />', () => {
   });
 
   it('should update onchange', () => {
-    const { email, password, changeEmail, changePassword } = renderComplexForm();
+    const { email, password, changeEmail, changePassword } = renderComplex();
     changeEmail('email');
     expect(email().value).toBe('email');
     changePassword('pwd');
@@ -41,20 +41,20 @@ describe('<CountEx />', () => {
 
   describe('disabled test', () => {
     it('input values are not filled', () => {
-      const { loginBtn, disabledDiv } = renderComplexForm();
+      const { loginBtn, disabledDiv } = renderComplex();
       expect(loginBtn()).toBeDisabled();
       expect(disabledDiv()).toBeInTheDocument();
     });
 
     it('password value are not filled', () => {
-      const { loginBtn, changeEmail, disabledDiv } = renderComplexForm();
+      const { loginBtn, changeEmail, disabledDiv } = renderComplex();
       changeEmail('email');
       expect(loginBtn()).toBeDisabled();
       expect(disabledDiv()).toBeInTheDocument();
     });
 
     it('email value are not filled', () => {
-      const { loginBtn, changePassword, disabledDiv } = renderComplexForm();
+      const { loginBtn, changePassword, disabledDiv } = renderComplex();
       changePassword('pwd');
       expect(loginBtn()).toBeDisabled();
       expect(disabledDiv()).toBeInTheDocument();
@@ -62,13 +62,13 @@ describe('<CountEx />', () => {
   });
 
   it('if disabled, disable submit', () => {
-    const { loginBtn, onSubmit } = renderComplexForm();
+    const { loginBtn, onSubmit } = renderComplex();
     expect(loginBtn()).toBeDisabled();
     expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('should submit', () => {
-    const { onSubmit, changeEmail, changePassword, onClick, disabledDiv } = renderComplexForm();
+    const { onSubmit, changeEmail, changePassword, onClick, disabledDiv } = renderComplex();
     changeEmail('email');
     changePassword('pwd');
     expect(disabledDiv()).not.toBeInTheDocument();
