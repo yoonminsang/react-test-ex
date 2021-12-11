@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import useInputs from '@/hooks/use-inputs';
 
 interface IProps {
-  onLogin: (email: string, password: string) => void;
+  onLogin: (email: string, password: string) => Promise<void>;
 }
 
 const FormEx: React.FC<IProps> = ({ onLogin }) => {
@@ -20,9 +20,9 @@ const FormEx: React.FC<IProps> = ({ onLogin }) => {
     }
   }, [email, password]);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(email, password);
+    await onLogin(email, password);
     reset();
   };
 

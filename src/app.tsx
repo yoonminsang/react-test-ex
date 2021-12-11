@@ -12,8 +12,9 @@ const Margin = styled.div`
 `;
 
 const App: React.FC = () => {
-  const onLogin = useCallback((email: string, password: string) => {
-    console.log(email, password);
+  const onLogin = useCallback(async (email: string, password: string) => {
+    const action = await Promise.resolve(`email:${email} password:${password}`);
+    console.log(action);
   }, []);
 
   return (
