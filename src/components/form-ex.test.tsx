@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import FormEx from './form-ex';
 
 const renderComplex = () => {
-  const onSubmit = jest.fn();
-  const { getByText, queryByText, container } = render(<FormEx onSubmit={onSubmit} />);
+  const onLogin = jest.fn();
+  const { getByText, queryByText, container } = render(<FormEx onLogin={onLogin} />);
   const email = () => container.querySelector('input[name="email"]') as HTMLInputElement;
   const password = () => container.querySelector('input[name="password"]') as HTMLInputElement;
   const loginBtn = () => getByText('로그인');
@@ -19,7 +19,7 @@ const renderComplex = () => {
   const onClick = () => {
     userEvent.click(loginBtn());
   };
-  return { onSubmit, email, password, loginBtn, disabledDiv, changeEmail, changePassword, onClick };
+  return { onLogin, email, password, loginBtn, disabledDiv, changeEmail, changePassword, onClick };
 };
 
 describe('<CountEx />', () => {
@@ -62,17 +62,17 @@ describe('<CountEx />', () => {
   });
 
   it('if disabled, disable submit', () => {
-    const { loginBtn, onSubmit } = renderComplex();
+    const { loginBtn, onLogin } = renderComplex();
     expect(loginBtn()).toBeDisabled();
-    expect(onSubmit).not.toHaveBeenCalled();
+    expect(onLogin).not.toHaveBeenCalled();
   });
 
   it('should submit', () => {
-    const { onSubmit, changeEmail, changePassword, onClick, disabledDiv } = renderComplex();
+    const { onLogin, changeEmail, changePassword, onClick, disabledDiv } = renderComplex();
     changeEmail('email');
     changePassword('pwd');
     expect(disabledDiv()).not.toBeInTheDocument();
     onClick();
-    expect(onSubmit).toHaveBeenCalled();
+    expect(onLogin).toHaveBeenCalled();
   });
 });

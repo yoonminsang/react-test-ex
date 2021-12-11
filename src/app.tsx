@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import CountEx from './components/count-ex';
 import FormEx from './components/form-ex';
@@ -12,16 +12,16 @@ const Margin = styled.div`
 `;
 
 const App: React.FC = () => {
-  const onSubmit = (email: string, password: string) => {
+  const onLogin = useCallback((email: string, password: string) => {
     console.log(email, password);
-  };
+  }, []);
 
   return (
     <Wrapper>
       앱
       <CountEx />
       <Margin />
-      <FormEx onSubmit={onSubmit} />
+      <FormEx onLogin={onLogin} />
     </Wrapper>
   );
 };

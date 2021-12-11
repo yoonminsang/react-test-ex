@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import useInputs from '@/hooks/use-inputs';
 
 interface IProps {
-  onSubmit: (email: string, password: string) => void;
+  onLogin: (email: string, password: string) => void;
 }
 
-const FormEx: React.FC<IProps> = ({ onSubmit }) => {
+const FormEx: React.FC<IProps> = ({ onLogin }) => {
   const [{ email, password }, onChange, reset] = useInputs({
     email: '',
     password: '',
@@ -20,14 +20,14 @@ const FormEx: React.FC<IProps> = ({ onSubmit }) => {
     }
   }, [email, password]);
 
-  const onSubmitFn = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(email, password);
+    onLogin(email, password);
     reset();
   };
 
   return (
-    <form onSubmit={onSubmitFn}>
+    <form onSubmit={onSubmit}>
       <input type="email" placeholder="user@gmail.com" value={email} onChange={onChange} name="email" />
       <input type="password" value={password} onChange={onChange} name="password" />
       {disabled && <div>이메일과 비밀번호를 입력해주세요</div>}
