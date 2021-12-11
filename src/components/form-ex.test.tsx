@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FormEx from './form-ex';
 
@@ -16,8 +16,10 @@ const renderComplex = () => {
   const changePassword = (str: string) => {
     userEvent.type(password(), str);
   };
-  const onClick = () => {
-    userEvent.click(loginBtn());
+  const onClick = async () => {
+    await act(async () => {
+      userEvent.click(loginBtn());
+    });
   };
   return { onLogin, email, password, loginBtn, disabledDiv, changeEmail, changePassword, onClick };
 };
@@ -61,18 +63,22 @@ describe('<CountEx />', () => {
     });
   });
 
-  it('if disabled, disable submit', () => {
-    const { loginBtn, onLogin } = renderComplex();
+  it('if disabled, disable submit', async () => {
+    const { loginBtn, onLogin, onClick } = renderComplex();
     expect(loginBtn()).toBeDisabled();
+    await onClick();
     expect(onLogin).not.toHaveBeenCalled();
   });
 
-  it('should submit', () => {
-    const { onLogin, changeEmail, changePassword, onClick, disabledDiv } = renderComplex();
+  it('should submit', async () => {
+    const { onLogin, changeEmail, changePassword, onClick, disabledDiv, email, password, loginBtn } = renderComplex();
     changeEmail('email');
     changePassword('pwd');
+    expect(loginBtn()).not.toBeDisabled();
     expect(disabledDiv()).not.toBeInTheDocument();
-    onClick();
+    await onClick();
     expect(onLogin).toHaveBeenCalled();
+    expect(email().value).toBe('');
+    expect(password().value).toBe('');
   });
 });
